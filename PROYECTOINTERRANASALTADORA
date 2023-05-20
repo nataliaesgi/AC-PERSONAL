@@ -1,0 +1,209 @@
+### A Pluto.jl notebook ###
+# v0.19.22
+
+using Markdown
+using InteractiveUtils
+
+# ╔═╡ 2fa0e4c0-21b5-4b0e-a638-6398b878cb22
+md"**Ejercicio 2: Rana saltarina**
+
+Una rana saltarina necesita atravesar un río para llegar a su hogar. La rana inicia en la orilla izquierda del río, y su camino consiste en una secuencia de rocas etiquetadas con los números _1, 2, 3, 4 . . . , n−1_; hasta la orilla derecha del río, etiquetada con n. Todas las rocas adyacentes están espaciadas en una unidad de distancia, al igual que la roca _n−1_ de la orilla derecha y la orilla izquierda de la roca 1.Es decir, a la rana le toma n saltos de una unidad llegar hasta la otra orilla, aunque su recorrido está sujeto a las siguientes restricciones:
+
+La rana solo puede dar saltos de longitud 1 o 2 unidades de longitud.
+
+La rana no puede retroceder.
+
+¿De cuántas formas distintas puede la rana saltarina atravesar el río dado un valor de n?"
+
+# ╔═╡ 47cf9050-d776-45dc-a472-ab341566cf2b
+md"1. Diseña un algoritmo que resuelva este problema y represéntalo en pseudocódigo o diagrama de flujo **(3 puntos)**."
+
+# ╔═╡ 74d8ad73-4820-488d-a467-229e2df7b4c5
+md"Antes de realizar el pseudocódigo, analicemos lo que se nos pide en el ejercicio.
+Ahora, necesitamos todas las combinaciones posibles de saltos tales que la rana no sobrepase una longitud mayor a 2 unidades por salto y además debemos de tomar en cuenta a x= _número de rocas que se encuentran entre el punto de partida y la orilla_.
+
+Tomando en cuenta que necesitamos un máximo de 45 rocas, consideremos el 15% de 45, entonces vamos a tomar en cuenta los primeros 6 casos y sus posibles combinaciones, para observar que comportamiento tienen las posibles combinaciones.
+Observemos los posibles casos que podemos obtener en x=1 hasta x=6.
+
+Caso 1: 1 opción, la cual es 1 salto.
+
+Caso 2: 2 opciones, las cuales son:
+
+*1 salto+1 salto
+
+*2 saltos
+
+Caso 3: 3 opciones, las cuales son: 
+
+*1 salto+1 salto+1 salto 
+
+*1 salto+2 salto 
+
+*2 salto+1 salto
+
+Caso 4: 5 opciones, las cuales son:
+
+*1 salto+1 salto+1 salto+1 salto
+
+*1 salto+1 salto+2 salto
+
+*2 salto+1 salto+1 salto
+
+*1 salto+2 salto+1 salto
+
+*2 salto+2 salto
+
+Caso 5: 8 opciones, las cuales son:
+
+*1 salto+1 salto+1 salto+1 salto 1 salto
+
+*1 salto+1 salto+1 salto+2 salto
+
+*1 salto+1 salto+2 salto+1 salto
+
+*1 salto+2 salto+1 salto+1 salto
+
+*2 salto+1 salto+1 salto+1 salto
+
+*1 salto+2 salto+2 salto
+
+*2 salto+1 salto+2 salto
+
+Caso 6: 13 opciones, las cuales son:
+
+*1 salto+1 salto+1 salto+1 salto+1 salto+1 salto
+
+*1 salto+1 salto+1 salto+1 salto+2 salto
+
+*1 salto+1 salto+1 salto+2 salto+1 salto
+
+*1 salto+1 salto+2 salto1 salto+1 salto
+
+*1 salto+2 salto+1 salto+1 salto+1 salto
+
+*2 salto+1 salto+1 salto+1 salto+1 salto
+
+*2 salto+2 salto+1 salto+1 salto
+
+*2 salto+1 salto+2 salto+1 salto
+
+*2 salto+1 salto+1 salto+2 salto
+
+*1 salto+2 salto+2 salto+1 salto
+
+*1 salto+1 salto+2 salto+2 salto
+
+*1 salto+2 salto+1 salto+2 salto
+
+*2 salto+2 salto+2 salto
+
+Por lo que entonces podemos ver que la sucesión númerica que sigue el problema es una secuencia fibonacci, por lo que entonces se propone realizar una operación que cumpla con esta secuencia.
+
+**OBS**. los resultados anteriores se resumen en lo siguiente:
+
+-n=1 entonces N=1
+-n=2 entonces N=2
+-n=3 entonces N=3
+-n=4 entonces N=5
+-n=5 entonces N=8
+-n=6 entonces N=13
+
+Donde además podemos ver que para obtener _N_ podemos sumar los 2 resultados anteriores, es decir para _N=8_ entonces sumo 5+3, para _N=13_ entonces sumo 5+8, lo cual nos será de ayuda para implementar nuestro código.
+
+Para los casos _n=1_ y _n=2_ vamos a asignar los valores de 1 y 2 respecticamente. 
+En los casos donde n>2 vamos a considerar lo siguiente:
+Tomando en cuenta que la rana inicia con 1 salto entonces obtenemos _n-1_, por otro lado si inicia con 2 saltos, entonces obtenemos _n-2_. Por lo anterior se propone tomar f(n-1)+f(n-2) en la implementación de nuestro código y posteriormente usar este valor para calcular los siguientes.
+"
+
+# ╔═╡ d4689244-7352-4a26-be0d-822c3312c456
+md"Por el analisis anterior entonces el pseudocódigo del algoritmo es el siguiente:"
+
+# ╔═╡ cbaba34f-04dd-4cc1-bbf4-67b6a7de7a0f
+md"Genera una función _f(x)_ con las siguientes condiciones
+
+si x==1
+
+	retomar 1
+
+si x==2
+
+	retomar 2
+
+sino 
+
+	retomar f(x-1)+f(x-2)
+
+fin"
+
+# ╔═╡ c786b1b3-daeb-4a1b-a656-a89e9260d486
+md"genera una funcion tiposde(x)
+
+retomar f(x)
+
+fin"
+
+# ╔═╡ 8a628730-0cf0-485d-9c87-e2e1118538e0
+md"para cada x desde 1 hasta 45
+
+llamar a la funcion _tiposde(x)_
+
+imprimir: El número de distintas combinaciones que se pueden hacer para x= Numero de rocas es...
+
+fin
+"
+
+# ╔═╡ 588c8811-3b8e-4b46-9fff-c17f1b6f19f5
+md"2. Implementa este algoritmo en Julia. La idea es que tu programa reciba un entero n (el tamaño del río), y devuelva N, el número de formas distintas que la rana puede cruzar **(5 puntos)**. Tu programa será aceptado si devuelve el valor correcto de N para cada valor de n, con _1 ≤ n ≤ 45_"
+
+
+# ╔═╡ 5dd7e918-797d-4464-8282-9fbb51469673
+function f(n)
+	if n==1 #si x=1
+		return 1 #dar un salto de 1
+	elseif n==2 #si x=2
+		return 2 #dar un salto de 2 bloques
+	else #si no es ninguna de las anteriores
+		return f(n-1)+f(n-2) #retomar los saltos 1 y 2
+	end #fin de las condiciones
+	end #funcion definida
+
+# ╔═╡ da5f6504-f13f-429a-9d53-a00049d0fff2
+function tiposde(n)#dar de alta una funcion
+	return f(n)#devolver los valores de f(n) que son todas las formas en las que la rana puede saltar
+end #fin
+
+# ╔═╡ 961d64e3-9993-470e-9fe0-9132e61b877f
+for n in 1:45 #para x desde 1 hasta 45
+	tipos=tiposde(n) #llamar a la funcion
+	println("El número de distintas combinaciones que se pueden hacer para n= $n es $tipos")
+end
+
+# ╔═╡ 580b8b79-f780-430d-9b46-aca2ec97db02
+md"**OBS**.Si se quiere saber el número de saltos para un valor puntual, solo basta con poner en el rango n:n, donde n=número de rocas"
+
+# ╔═╡ 415cca13-80d0-42af-884d-71b6c3f407cf
+md"3. Reflexiona sobre la complejidad temporal y espacial de tu algoritmo. ¿Cómo cambia el tiempo de ejecución de tu programa conforme crece n?, ¿cómo cambia el espacio ocupado en la memoria de la máquina conforme incrementa n? (1 punto)
+
+Conforme crece el valor de _n_ el tiempo va incrementando de forma notoria si lo calculamos dentro de un rango, por ejemplo, para un valor de _1:n=4_ el tiempo de ejecución es de:798 microsegundos, sin embargo para una _1:n=45_ el tiempo de ejecución es de 116 segundos, por lo que mientras más grande sea el valor de _n_, más tiempo tendremos que esperar para que se ejecute el programa, análogo a este caso, sucede cuando pedimos el valor de saltos para un número de rocas específico, ya que tarda un poco más de tiempo para ejecutar el programa.
+Ahora, para el espacio ocupado en la memoria es importante ver que los datos obtenidos crecen de forma constante, claramente conforme mayor valor de _n_ se tome mayor espacio se va a ocupar. Para ser mas puntual, si pedimos el rango de _1:100_ entonces se ocupa más memoria, por otro lado, si tomamos un valor en espefico, por ejemplo el numero de saltos para _n=5_ entonces si hay un incremento de memoria, pero es menos significativo." 
+
+# ╔═╡ c94ed0c8-7569-4213-adac-484e639c237c
+md"4. Reflexiona sobre el valor máximo que puede tomar n de tal forma que no haya sobreflujo en tus resultados de N **(1 punto)**.
+
+Para el valor máximo que puede tomar n para evitar el sobreflujo es importante ver que nuestro código esta compuesto por ciclos for, por lo visto en clase sabemos que estos ciclos, son ejecutados de forma iterativa, lo cual nos evita el tener un sobreflujo en las salidas, ya que a cada iteración se le asigna el valor del elemento que en ese momento este en turno."
+
+# ╔═╡ Cell order:
+# ╟─2fa0e4c0-21b5-4b0e-a638-6398b878cb22
+# ╟─47cf9050-d776-45dc-a472-ab341566cf2b
+# ╟─74d8ad73-4820-488d-a467-229e2df7b4c5
+# ╠═d4689244-7352-4a26-be0d-822c3312c456
+# ╟─cbaba34f-04dd-4cc1-bbf4-67b6a7de7a0f
+# ╟─c786b1b3-daeb-4a1b-a656-a89e9260d486
+# ╟─8a628730-0cf0-485d-9c87-e2e1118538e0
+# ╟─588c8811-3b8e-4b46-9fff-c17f1b6f19f5
+# ╠═5dd7e918-797d-4464-8282-9fbb51469673
+# ╠═da5f6504-f13f-429a-9d53-a00049d0fff2
+# ╠═961d64e3-9993-470e-9fe0-9132e61b877f
+# ╟─580b8b79-f780-430d-9b46-aca2ec97db02
+# ╟─415cca13-80d0-42af-884d-71b6c3f407cf
+# ╟─c94ed0c8-7569-4213-adac-484e639c237c

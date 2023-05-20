@@ -340,9 +340,6 @@ md"## Recursos complementarios
 * [Tutoriales](https://juliaimages.org/latest/tutorials/arrays_colors/) y [demostraciones](https://juliaimages.org/latest/examples/#demonstrations) de JuliaImages.
 * Lección [Images as Data and Arrrays](https://computationalthinking.mit.edu/Spring21/images/) del curso de [Computational Thinking](https://computationalthinking.mit.edu/Spring21/) del MIT."
 
-# ╔═╡ a0dbe9a4-efeb-442d-9473-d608a3f60858
-using Images
-
 # ╔═╡ 55d431d6-22a8-4f32-b018-bb6d5c3cdefd
 using Images, ImageView, TestImages, PlutoUI, Colors
 
@@ -350,6 +347,9 @@ using Images, ImageView, TestImages, PlutoUI, Colors
 biblioteca antes de correr otras celdas de código. Esto puede 
 tomar unos minutos la primera vez, porque probablemente Pluto 
 tenga que instalaras. =#
+
+# ╔═╡ a0dbe9a4-efeb-442d-9473-d608a3f60858
+using Images
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
